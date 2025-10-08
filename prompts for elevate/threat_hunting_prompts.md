@@ -73,6 +73,8 @@ Analyse Akira Ransomware Victims and Tactics.
 Based on what was provided, provide some threat hunting hypotheses.
 ```
 
+
+
 ## Vulnerabilities
 
 * Understanding specific vulnerabilities

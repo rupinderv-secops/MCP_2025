@@ -1,6 +1,6 @@
-'''
-# Cyber Threat Actor Research Prompt
 
+* Cyber Threat Actor Research Prompt
+```
 **Research Target:** [INSERT THREAT ACTOR NAME/APT GROUP]
 
 ## Research Objectives
@@ -91,4 +91,4 @@ Provide 3-5 actionable recommendations:
 - Provide confidence levels for key judgments
 - Include source attribution and publication dates
 - Highlight any information gaps or limitations
-'''
+```
