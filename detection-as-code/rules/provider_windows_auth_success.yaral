@@ -1,0 +1,33 @@
+rule provider_windows_auth_success {
+
+  meta:
+    author = "notcmmartin@"
+    description = "Detects auth success" 
+    updated_date = "2025-05-03"
+    severity = "Medium" 
+    priority = "Medium" 
+    mitre_attack_tactic = "TA0006 - Credential Access" 
+    mitre_attack_technique = "T1110 - Brute Force" 
+    mitre_attack_sub_technique = "T1110.001 - Password Guessing"
+    platform = "Windows" 
+    log_source = "Microsoft Windows Security Events" 
+    status = "stable"
+    confidence = "Medium"
+    tags = "Authentication, Brute Force, Windows, Login"
+
+  events:
+    $success.metadata.event_type = "USER_LOGIN"
+    $success.metadata.vendor_name = "Microsoft"
+    $success.security_result.action = "ALLOW"
+    $success.target.user.userid = $user
+    $success.principal.hostname = $hostname
+
+  match:
+    $user, $hostname over 15m
+
+  outcome:
+    $risk_score = max(0)
+ 
+  condition:
+    $success
+}

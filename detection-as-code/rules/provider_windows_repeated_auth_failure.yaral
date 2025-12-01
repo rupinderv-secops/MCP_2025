@@ -1,0 +1,35 @@
+rule provider_windows_repeated_auth_failure {
+
+  meta:
+    author = "notcmmartin@"
+    description = "Detects multiple failed Windows login attempts for a user on a specific host."
+    creation_date = "2025-05-03" 
+    updated_date = "2025-05-03"
+    severity = "INFO" 
+    priority = "INFO" 
+    mitre_attack_tactic = "TA0006 - Credential Access" 
+    mitre_attack_technique = "T1110 - Brute Force" 
+    mitre_attack_sub_technique = "T1110.001 - Password Guessing"
+    platform = "Windows" 
+    log_source = "Microsoft Windows Security Events" 
+    status = "stable"
+    confidence = "Medium"
+    tags = "Authentication, Brute Force, Windows, Login"
+
+  events:
+    $fail.metadata.event_type = "USER_LOGIN"
+    $fail.metadata.vendor_name = "Microsoft"
+    $fail.security_result.action = "BLOCK"
+    $fail.principal.hostname = $hostname
+    $fail.target.user.userid = $user
+
+  match:
+    $user, $hostname over 15m
+
+  outcome:
+    $risk_score = max(0)
+    $fail_count = count_distinct($fail.metadata.id)
+ 
+  condition:
+    #fail > 4
+}

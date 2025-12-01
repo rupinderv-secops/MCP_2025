@@ -1,0 +1,43 @@
+rule consumer_sequence_windows_repeated_failure_then_success {
+
+  meta:
+    author = "notcmmartin@"
+    description = "Detects auth success" 
+    updated_date = "2025-05-03"
+    severity = "Medium" 
+    priority = "Medium" 
+    mitre_attack_tactic = "TA0006 - Credential Access" 
+    mitre_attack_technique = "T1110 - Brute Force" 
+    mitre_attack_sub_technique = "T1110.001 - Password Guessing"
+    platform = "Windows" 
+    log_source = "Microsoft Windows Security Events" 
+    status = "stable"
+    confidence = "Medium"
+    tags = "Authentication, Brute Force, Windows, Login"
+
+
+  events:
+    $d0.detection.type = "RULE_DETECTION"
+    $d0.detection.detection.rule_name = "provder_windows_repeated_auth_failure"
+    $hostname = $d0.detection.detection.variables["hostname"]
+    $user = $d0.detection.detection.variables["user"]
+
+    $d1.detection.type = "RULE_DETECTION"
+    $d1.detection.detection.rule_name = "provider_windows_auth_success"
+    $hostname = $d1.detection.detection.variables["hostname"]
+    $user = $d1.detection.detection.variables["user"]    
+
+  match:
+    $hostname, $user over 3d
+
+  outcome:
+    $risk_score = 0
+    $first_success_time = min($d1.detection.detection_time.seconds) // Use timestamp from SUCCESS ($d1)
+    $last_failure_time = max($d0.detection.detection_time.seconds)   // Use timestamp from FAILURE ($d0)
+    $first_success_ts = timestamp.get_timestamp(min($d1.detection.created_time.seconds))
+    $last_failure_ts = timestamp.get_timestamp(max($d0.detection.created_time.seconds))
+
+
+  condition:
+    $d0 and $d1 and $first_success_time >= $last_failure_time
+}

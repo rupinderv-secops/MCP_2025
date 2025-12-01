@@ -1,0 +1,26 @@
+GTI:
+  columns:
+  - column_index: 0
+    column_type: STRING
+    key_column: null
+    mapped_column_path: null
+    original_column: Indicator_Type
+  - column_index: 1
+    column_type: STRING
+    key_column: null
+    mapped_column_path: null
+    original_column: Indicator_Value
+  - column_index: 2
+    column_type: STRING
+    key_column: null
+    mapped_column_path: null
+    original_column: Associated_Campaigns
+  create_time: '2025-11-18T03:54:29.043014Z'
+  description: null
+  resource_name: projects/secops-env-1/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/dataTables/GTI
+  row_time_to_live: null
+  rule_associations_count: 1
+  rules:
+  - projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_57760f26-5d11-4f54-892f-38db34fc0114
+  update_time: '2025-11-18T06:43:06.450171Z'
+  uuid: 78879a63187f4f3ba307be4e6c4780f7

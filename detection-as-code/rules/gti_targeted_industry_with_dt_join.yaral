@@ -1,0 +1,31 @@
+rule gti_targeted_industry_with_dt_join {
+
+  meta:
+    author = "cmmartin@"
+    description = "Example of a Data Table graph_override"
+    severity = "HIGH"
+    priority = "HIGH"
+    source = "https://advantage.mandiant.com/reports/24-10017389"
+
+  setup:
+    //graph_append [$dt, %GTI_24_10017389_MD5]
+    graph_override ($dt.graph.entity.file.md5 = %GTI.Indicator_Value)
+
+  events:
+    $e.metadata.event_type = "PROCESS_LAUNCH"
+    $e.target.process.file.md5 = $hash
+    $e.target.process.file.md5 in %GTI.Indicator_Value
+
+    $dt.graph.entity.file.md5 = $hash
+    $dt.graph.entity.file.md5 in %GTI.Indicator_Value
+
+  match:
+    $hash over 1m
+
+  outcome:
+    $risk_score = 35
+    //$actors = array_distinct($dt.graph.additional.fields["Associated_Actors"])
+
+  condition:
+    $e and $dt
+}
