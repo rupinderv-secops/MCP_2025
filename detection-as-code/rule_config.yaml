@@ -1,3 +1,15 @@
+APT34_Updated_Toolset_Intezer:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2025-12-01T01:40:30.164847Z'
+  enabled: true
+  id: ru_2817a385-ca18-4033-ab0b-2ce76c2419be
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_2817a385-ca18-4033-ab0b-2ce76c2419be
+  revision_create_time: '2025-12-01T01:40:30.164847Z'
+  revision_id: v_1764553230_164847000
+  run_frequency: LIVE
+  type: MULTI_EVENT
 adfs_db_suspicious_named_pipe_connection:
   alerting: true
   archive_time: null
@@ -1990,6 +2002,3 @@ wmic_ntds_dit_T1003_003_cisa_report:
   revision_id: v_1751512990_272895000
   run_frequency: LIVE
   type: SINGLE_EVENT
-APT34_Updated_Toolset_Intezer:
-  alerting: false
-  enabled: true
