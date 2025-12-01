@@ -2014,6 +2014,3 @@ wmic_ntds_dit_T1003_003_cisa_report:
   revision_id: v_1751512990_272895000
   run_frequency: LIVE
   type: SINGLE_EVENT
-filefix_unc5774:
-  alerting: false
-  enabled: true
