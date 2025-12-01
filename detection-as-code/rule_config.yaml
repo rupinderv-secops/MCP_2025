@@ -1994,3 +1994,8 @@ wmic_ntds_dit_T1003_003_cisa_report:
 filefix_unc5774:
   alerting: false
   enabled: true
+rule_living_off_the_land_binaries:
+  alerting: true
+  archive_time: null
+  archived: false
+  enabled: true
