@@ -1,4 +1,15 @@
-
+APT34_Updated_Toolset_Intezer:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2025-12-01T01:40:30.164847Z'
+  enabled: true
+  id: ru_2817a385-ca18-4033-ab0b-2ce76c2419be
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_2817a385-ca18-4033-ab0b-2ce76c2419be
+  revision_create_time: '2025-12-01T01:40:30.164847Z'
+  revision_id: v_1764553230_164847000
+  run_frequency: LIVE
+  type: MULTI_EVENT
 adfs_db_suspicious_named_pipe_connection:
   alerting: true
   archive_time: null
@@ -790,6 +801,18 @@ domain_prevalence:
   revision_create_time: '2025-07-02T03:22:52.928367Z'
   revision_id: v_1751426572_928367000
   run_frequency: LIVE
+  type: MULTI_EVENT
+filefix_unc5774:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2025-12-01T03:39:35.728975Z'
+  enabled: true
+  id: ru_53ebddd5-b81c-4872-9624-66cdeec9e724
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_53ebddd5-b81c-4872-9624-66cdeec9e724
+  revision_create_time: '2025-12-01T03:39:35.728975Z'
+  revision_id: v_1764560375_728975000
+  run_frequency: HOURLY
   type: MULTI_EVENT
 gcti_benign_binaries_contacts_tor_exit_node:
   alerting: true
@@ -1993,9 +2016,4 @@ wmic_ntds_dit_T1003_003_cisa_report:
   type: SINGLE_EVENT
 filefix_unc5774:
   alerting: false
-  enabled: true
-rule_living_off_the_land_binaries:
-  alerting: true
-  archive_time: null
-  archived: false
   enabled: true
