@@ -1990,9 +1990,6 @@ wmic_ntds_dit_T1003_003_cisa_report:
   revision_id: v_1751512990_272895000
   run_frequency: LIVE
   type: SINGLE_EVENT
-APT34_Updated_Toolset_Intezer:
-  alerting: false
-  enabled: true
 filefix_unc57743_T1547_001:
   alerting: true
   archive_time: null
