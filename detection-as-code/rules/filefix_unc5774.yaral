@@ -1,0 +1,44 @@
+rule filefix_unc5774 {
+  // This rule matches single events. Rules can also match multiple events within
+  // some time window. For details about how to write a multi-event rule, see
+  // https://cloud.google.com/chronicle/docs/detection/yara-l-2-0-overview#single-event_versus_multi-event
+
+  meta:
+    author = "AndyS"
+    description = "Explorer or Chrome launchingpowershell, then web traffic to a common URL" 
+    sourceMaterial= "https://advantage.mandiant.com/reports/25-10032348"
+    severity = "Medium" 
+    priority = "Medium" 
+    tactic = "TA0011" //Command and Control 
+    technique = "T1204" //Web Service"
+    confidence = "Medium"
+    tags = ""
+
+  events:
+    $ps.metadata.event_type = "PROCESS_LAUNCH"
+    re.regex($ps.principal.process.file.full_path, `explorer\.exe|chrome\.exe`) nocase
+    re.regex($ps.target.process.file.full_path,`powershell\.exe`)
+    $ps.principal.process.file.full_path = $caller
+    $ps.principal.asset.asset_id = $hostname
+
+    // re.regex($conn.target.url, `.*trycloudflare.*`)
+    $conn.principal.asset.asset_id = $hostname
+    $conn.metadata.event_type = "NETWORK_HTTP"
+    $conn.target.hostname = $url 
+  
+    $prevalence.graph.entity.hostname = $url
+    $prevalence.graph.entity.hostname != "localhost"
+    $prevalence.graph.metadata.entity_type = "DOMAIN_NAME"
+    $prevalence.graph.metadata.source_type = "DERIVED_CONTEXT"
+
+  match:
+    $hostname over 1h
+
+  outcome:
+    $risk_score = 0
+    $hosts = array_distinct($conn.target.hostname)
+    $prevDays = array_distinct($prevalence.graph.entity.domain.prevalence.day_max)
+
+condition:
+    $ps and $conn and $prevalence
+}

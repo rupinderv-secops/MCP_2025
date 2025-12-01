@@ -1993,3 +1993,9 @@ wmic_ntds_dit_T1003_003_cisa_report:
 APT34_Updated_Toolset_Intezer:
   alerting: false
   enabled: true
+filefix_unc57743_T1547_001:
+  alerting: true
+  archive_time: null
+  archived: false
+  create_time: '2025-07-03T03:23:10.990863Z'
+  enabled: true
