@@ -814,6 +814,18 @@ filefix_unc5774:
   revision_id: v_1764560375_728975000
   run_frequency: HOURLY
   type: MULTI_EVENT
+fusion_feed_djr_test_principal_process_file_md5:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2025-12-09T07:09:01.776495Z'
+  enabled: true
+  id: ru_0972a667-ab83-4ca8-bdda-b67a29b7d530
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_0972a667-ab83-4ca8-bdda-b67a29b7d530
+  revision_create_time: '2025-12-09T07:09:01.776495Z'
+  revision_id: v_1765264141_776495000
+  run_frequency: HOURLY
+  type: MULTI_EVENT
 gcti_benign_binaries_contacts_tor_exit_node:
   alerting: true
   archive_time: null

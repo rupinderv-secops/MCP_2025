@@ -1,0 +1,30 @@
+rule fusion_feed_djr_test_principal_process_file_md5 {
+ meta:
+   rule_name = "File Hash - Applied Threat Intelligence"
+   description = "Matches file hashes against the Applied Threat Intelligence Fusion Feed."
+
+ events:
+   // Filter graph
+   $context_graph.graph.metadata.product_name = "MANDIANT_FUSION_IOC"
+   $context_graph.graph.metadata.vendor_name = "MANDIANT_FUSION_IOC"
+   $context_graph.graph.metadata.entity_type = "FILE"
+   $context_graph.graph.metadata.source_type = "GLOBAL_CONTEXT"
+
+   // Do join
+   $ioc = $context_graph.graph.entity.file.md5
+   $ioc = $e1.principal.process.file.md5
+
+ match:
+   $ioc over 1h
+
+ outcome:
+   // Extract the Mandiant Automated Intel confidence score of maliciousness
+   $confidence_score = max(if($context_graph.graph.metadata.threat.verdict_info.source_provider = "Mandiant Automated Intel", $context_graph.graph.metadata.threat.verdict_info.confidence_score, 0))
+   // Extract the status of the indicator as seen in a breached environment
+   $breached = max(if($context_graph.graph.metadata.threat.verdict_info.pwn = true, 1, 0))
+   $global_hit_count = max(if($context_graph.graph.metadata.threat.verdict_info.source_provider = "Mandiant Global Intel", $context_graph.graph.metadata.threat.verdict_info.global_hits_count, 0))
+   $type = array_distinct($context_graph.graph.metadata.threat.associations.type)
+   $actorname = array_distinct($context_graph.graph.metadata.threat.associations.associated_actors.name)
+ condition:
+   $e1 AND $context_graph
+}
