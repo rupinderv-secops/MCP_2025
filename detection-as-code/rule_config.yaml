@@ -11,11 +11,11 @@ APT34_Updated_Toolset_Intezer:
   run_frequency: LIVE
   type: MULTI_EVENT
 MULTIPLE_CURATED_DETECTIONS_BY_HOSTNAME:
-  alerting: false
+  alerting: true
   archive_time: null
   archived: false
   create_time: '2026-03-25T00:44:22.156031Z'
-  enabled: false
+  enabled: true
   id: ru_94970468-b895-4825-9925-97881a56bc48
   resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_94970468-b895-4825-9925-97881a56bc48
   revision_create_time: '2026-03-25T00:44:22.156031Z'
@@ -23,11 +23,11 @@ MULTIPLE_CURATED_DETECTIONS_BY_HOSTNAME:
   run_frequency: HOURLY
   type: MULTI_EVENT
 PROMPTFLUX_Thinking_Robot_Correlation:
-  alerting: false
+  alerting: true
   archive_time: null
   archived: false
   create_time: '2026-03-25T00:44:21.682655Z'
-  enabled: false
+  enabled: true
   id: ru_8a69dcde-2b69-4685-a632-ced5b837674c
   resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_8a69dcde-2b69-4685-a632-ced5b837674c
   revision_create_time: '2026-03-25T00:44:21.682655Z'
