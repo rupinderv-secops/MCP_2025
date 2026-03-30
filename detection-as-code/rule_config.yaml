@@ -838,6 +838,42 @@ filefix_unc5774:
   revision_id: v_1764560375_728975000
   run_frequency: HOURLY
   type: MULTI_EVENT
+fpg_delinea_secrets_launched_outside_of_working_hours:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-03-30T03:01:29.191551Z'
+  enabled: false
+  id: ru_5b785e32-9a96-40f7-8f46-1a873f18ca9f
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_5b785e32-9a96-40f7-8f46-1a873f18ca9f
+  revision_create_time: '2026-03-30T03:01:44.513823Z'
+  revision_id: v_1774839704_513823000
+  run_frequency: LIVE
+  type: SINGLE_EVENT
+fpg_netskope_malware_detection:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-03-30T03:37:15.220847Z'
+  enabled: false
+  id: ru_881ca81e-694c-40b7-a9e2-53383e4c0336
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_881ca81e-694c-40b7-a9e2-53383e4c0336
+  revision_create_time: '2026-03-30T03:37:26.556719Z'
+  revision_id: v_1774841846_556719000
+  run_frequency: LIVE
+  type: SINGLE_EVENT
+fpg_trendmicro_malware_detection:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-03-30T03:02:31.516079Z'
+  enabled: false
+  id: ru_4c91089d-6d4e-43bc-87c2-5869c515040a
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_4c91089d-6d4e-43bc-87c2-5869c515040a
+  revision_create_time: '2026-03-30T03:02:50.747279Z'
+  revision_id: v_1774839770_747279000
+  run_frequency: LIVE
+  type: SINGLE_EVENT
 fusion_feed_djr_test_principal_process_file_md5:
   alerting: false
   archive_time: null
@@ -1760,6 +1796,42 @@ rule_1727979376900:
   resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_8925efcb-4e9b-4e36-a52a-935bc6d4dbad
   revision_create_time: '2025-07-02T03:23:19.962607Z'
   revision_id: v_1751426599_962607000
+  run_frequency: LIVE
+  type: SINGLE_EVENT
+rv_fpg_netskope_dlp_external_medium_or_higher:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-03-30T03:02:10.577343Z'
+  enabled: false
+  id: ru_0c1be254-410a-4ac0-8e97-65fc014c8da6
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_0c1be254-410a-4ac0-8e97-65fc014c8da6
+  revision_create_time: '2026-03-30T07:28:31.804975Z'
+  revision_id: v_1774855711_804975000
+  run_frequency: LIVE
+  type: SINGLE_EVENT
+rv_fpg_netskope_malware_detection_v2:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-03-30T04:34:47.473743Z'
+  enabled: false
+  id: ru_4bdc8b52-48ed-4f2b-8cbe-3f11e1e71253
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_4bdc8b52-48ed-4f2b-8cbe-3f11e1e71253
+  revision_create_time: '2026-03-30T04:34:47.473743Z'
+  revision_id: v_1774845287_473743000
+  run_frequency: LIVE
+  type: SINGLE_EVENT
+rv_fpg_trendmicro_malware_detection_v2:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-03-30T03:48:58.674799Z'
+  enabled: false
+  id: ru_e5e50874-23b6-493c-bcd8-0862f82b7a64
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_e5e50874-23b6-493c-bcd8-0862f82b7a64
+  revision_create_time: '2026-03-30T03:48:58.674799Z'
+  revision_id: v_1774842538_674799000
   run_frequency: LIVE
   type: SINGLE_EVENT
 rw_mimikatz_T1003:

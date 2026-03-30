@@ -1,0 +1,42 @@
+rule rv_fpg_netskope_dlp_external_medium_or_higher {
+  meta:
+    author = "Cindy He"
+    description = "Triggers detection when Netskope identifies External DLP exposure with Medium or above severity"
+    rule_name = "Netskope DLP External Exposure (Medium or above)"
+    mitre_attack_tactic = "Exfiltration"
+    mitre_attack_technique = "Exfiltration Over Web Service"
+    technique = "T1567"
+    mitre_attack_url = "https://attack.mitre.org/techniques/T1567/"
+    mitre_attack_version = "v18.1"
+    type = "Alert"
+    data_source = "Netskope"
+    note = `On SecOps, security_result.action Mapped to QUARANTINE because the value is "alert", it should follow $e.security_result.action_details.
+    However, the DLP alert is not QUARANTINED. Additionally, the severity should follow security_result.detection_fields["dlp_rule_severity"]`
+
+  events:
+    $e.metadata.product_name = "NETSKOPE_ALERT_V2"
+    $e.security_result.detection_fields["alert_type"] = "DLP"
+    $e.additional.fields["exposure"] = "External"
+    (strings.to_lower($e.security_result.detection_fields["dlp_rule_severity"]) = "medium" 
+    or strings.to_lower($e.security_result.detection_fields["dlp_rule_severity"]) = "high" 
+    or strings.to_lower($e.security_result.detection_fields["dlp_rule_severity"]) = "critical")
+
+  outcome:
+    $rule_severity = strings.to_lower($e.target.file.sha256)
+    $suppression_key = $e.additional.fields["suppression_key"]
+    $raw_score = 50
+    $additional_score = if($rule_severity = "high", 30, if($rule_severity = "critical", 40, 0))
+    $risk_score = $raw_score + $additional_score
+    $mitre_attack_technique_id = "T1567"
+    $mitre_attack_tactic = "Exfiltration"
+    $mitre_attack_technique = "Exfiltration Over Web Service"
+    $note = `On SecOps, security_result.action Mapped to QUARANTINE because the value is "alert", it should follow $e.security_result.action_details.
+    However, the DLP alert is not QUARANTINED. Additionally, the severity should follow security_result.detection_fields["dlp_rule_severity"].
+    Singapore NRIC is akin to a Social Security Number (SSN)`
+
+  condition:
+    $e
+
+  options:
+    suppression_window = 1h
+}
