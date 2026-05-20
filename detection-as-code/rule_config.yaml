@@ -1870,6 +1870,18 @@ safebrowsing_process_creation_hashes_seen_more_than_7_days:
   revision_id: v_1751512989_054319000
   run_frequency: HOURLY
   type: MULTI_EVENT
+shm_using_hostname:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-05-19T23:57:47.786511Z'
+  enabled: false
+  id: ru_61bfeb83-a682-4001-bab1-c3dbf6d9eb75
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_61bfeb83-a682-4001-bab1-c3dbf6d9eb75
+  revision_create_time: '2026-05-19T23:57:47.786511Z'
+  revision_id: v_1779235067_786511000
+  run_frequency: HOURLY
+  type: MULTI_EVENT
 ssh_bruteforce:
   alerting: false
   archive_time: null

@@ -1,0 +1,29 @@
+rule shm_using_hostname {
+  meta:
+    description = "Detects when a critical host stops sending logs natively"
+    severity = "Medium"
+    category = "Silent Host Monitoring"
+
+  events:
+    // 1. Scan window: Evaluate logs from the host over a trailing window (e.g., past 2 hours)
+    $event.metadata.event_timestamp.seconds > timestamp.current_seconds() - 7200
+    $silent_hostname = $event.principal.hostname
+
+  match:
+    // 2. Track per unique host over a specific time window
+    $silent_hostname over 60m
+
+  outcome:
+    // 3. Map system timestamps to compute the silence delta
+    $max_event_time = max($event.metadata.event_timestamp.seconds)
+    $diff_seconds = timestamp.current_seconds() - $max_event_time
+
+    // Enrichment variables for the SOC analyst
+    $last_seen_date = timestamp.get_timestamp($max_event_time)
+    $target_host = array_distinct($silent_hostname)
+
+  condition:
+    // 4. Trigger alert only if the host is missing and delta exceeds the threshold + buffer
+    // (e.g., 2700 seconds = 45 minutes total lookback)
+    $event and $diff_seconds > 2700
+}
