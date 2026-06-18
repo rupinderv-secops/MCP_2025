@@ -1942,6 +1942,18 @@ ttp_chrome_admin_password_reused:
   revision_id: v_1751426600_123407000
   run_frequency: LIVE
   type: SINGLE_EVENT
+ttp_kerberos_ticket_manipulation_command:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-06-17T04:46:10.966415Z'
+  enabled: false
+  id: ru_0218f632-25ec-461f-9602-cee7dd2c775d
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_0218f632-25ec-461f-9602-cee7dd2c775d
+  revision_create_time: '2026-06-17T04:46:10.966415Z'
+  revision_id: v_1781671570_966415000
+  run_frequency: LIVE
+  type: SINGLE_EVENT
 vt_relationships_file_contacts_domain:
   alerting: true
   archive_time: null

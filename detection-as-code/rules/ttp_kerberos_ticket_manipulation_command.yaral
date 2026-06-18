@@ -1,0 +1,61 @@
+rule ttp_kerberos_ticket_manipulation_command {
+    meta:
+      rule_name = "Kerberos Ticket Manipulation Command Execution"
+      description = "Detects the execution of commands associated with Kerberos ticket manipulation, forgery, and pass-the-ticket attacks."
+      severity = "Low"
+      tactic = "TA0006"
+      technique = "T1558"
+
+  events:
+    $e.metadata.event_type = "PROCESS_LAUNCH"
+    (
+      re.regex($e.target.process.command_line, `kerberos::(?:ptt|ptc|golden|silver|list|purge|tgt|ask)`) nocase
+      or
+      (
+        re.regex($e.target.process.file.full_path, `\bmimikatz\.exe$`) nocase
+        and re.regex($e.target.process.command_line, `\bkerberos\b`) nocase
+      )
+    )
+
+  outcome:
+    // Event Details
+    $principal_process_command_line = array_distinct($e.principal.process.command_line)
+    $principal_process_file_path = array_distinct($e.principal.process.file.full_path)
+    $target_process_command_line = array_distinct($e.target.process.command_line)
+    $target_process_file_path = array_distinct($e.target.process.file.full_path)
+
+    // Victim Details
+    $victim_uid = array_distinct($e.principal.asset.asset_id)
+    $victim_name = array_distinct($e.principal.hostname)
+    $victim_netid = array_distinct($e.principal.ip)
+
+    // Adversary Details
+    $adversary_uid = array_distinct($e.principal.user.userid)
+    $adversary_name = array_distinct($e.principal.user.user_display_name)
+    $adversary_netid = array_distinct(
+    if($e.principal.platform = "WINDOWS",
+      $e.principal.user.windows_sid,  // Value if TRUE
+      $e.principal.user.email_addresses       // Value if FALSE (covers LINUX and MAC in this case)
+      )
+    )
+
+    // Standard Details
+    $vendor_name = array_distinct($e.metadata.vendor_name)
+    $product_name = array_distinct($e.metadata.product_name)
+    $event_count = count_distinct($e.metadata.id)
+    $result_time = max($e.metadata.event_timestamp.seconds)
+
+    // Result Logic
+    $tmp1 = max(
+      // First, any action is not block or not unknown, return success (2).
+      if($e.security_result.action != "BLOCK" and $e.security_result.action != "UNKNOWN_ACTION", 2)
+    )
+    $tmp2 = max(
+      // If any action is blocked, return failed (1).
+      if($e.security_result.action = "BLOCK", 1)
+    )
+    $result = arrays.index_to_str(strings.split("attempted,failed,succeeded,succeeded", ","), $tmp1 + $tmp2)
+
+  condition:
+    $e
+}
