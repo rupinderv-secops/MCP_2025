@@ -51,4 +51,3 @@ rule o365_login_activity_to_azure_ad_powershell_app {
 }
 
 
-
