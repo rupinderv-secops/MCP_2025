@@ -1,0 +1,27 @@
+rule ttp_suspicious_script_interpreter_with_sleep {
+    meta:
+      author = "Antigravity"
+      description = "Detects the execution of scripting or command interpreters (e.g., powershell.exe, wscript.exe) invoking scripts with sleeping periods or known malicious script names associated with payload deployment."
+      severity = "Low"
+
+  events:
+    $e.metadata.event_type = "PROCESS_LAUNCH"
+    
+    // Identify script interpreter execution
+    (
+      $e.target.process.file.full_path = /\b(powershell|wscript|cscript|pwsh)\.exe$/ or
+      $e.target.process.command_line = /\b(powershell|wscript|cscript|pwsh)\b/
+    )
+    
+    // Identify behavioral indicators (sleep commands) or specific malicious script atomic indicators
+    (
+      $e.target.process.command_line = /\b(dodgy\.js|sangria\.ps1|scriptv2\.ps1)\b/ or
+      (
+        $e.target.process.command_line = /\b(Start-Sleep|-Sleep|WScript\.Sleep|sleep)\b/ and
+        $e.target.process.command_line = /\.(js|ps1|vbs)\b/
+      )
+    )
+
+  condition:
+    $e
+}

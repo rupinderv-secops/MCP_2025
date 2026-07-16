@@ -1138,6 +1138,30 @@ low_prevalence_hash_on_process_launch_low_prevalence_domain_accessed:
   revision_id: v_1751426608_012991000
   run_frequency: LIVE
   type: MULTI_EVENT
+m_hunting_mimikatz_args:
+  alerting: true
+  archive_time: null
+  archived: false
+  create_time: '2026-07-15T00:55:26.035103Z'
+  enabled: true
+  id: ru_7aa0c287-f3e0-4dcc-a402-a61eb581e5c6
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_7aa0c287-f3e0-4dcc-a402-a61eb581e5c6
+  revision_create_time: '2026-07-15T00:55:26.035103Z'
+  revision_id: v_1784076926_035103000
+  run_frequency: LIVE
+  type: SINGLE_EVENT
+m_hunting_mimikatz_args_extended:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-07-15T00:53:11.649183Z'
+  enabled: false
+  id: ru_1396375c-d6e4-4bb1-8339-25b9f85a25cf
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_1396375c-d6e4-4bb1-8339-25b9f85a25cf
+  revision_create_time: '2026-07-15T00:53:11.649183Z'
+  revision_id: v_1784076791_649183000
+  run_frequency: LIVE
+  type: SINGLE_EVENT
 malware_win_lokibot_c2:
   alerting: true
   archive_time: null
@@ -1952,6 +1976,18 @@ ttp_kerberos_ticket_manipulation_command:
   resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_0218f632-25ec-461f-9602-cee7dd2c775d
   revision_create_time: '2026-06-17T04:46:10.966415Z'
   revision_id: v_1781671570_966415000
+  run_frequency: LIVE
+  type: SINGLE_EVENT
+ttp_suspicious_script_interpreter_with_sleep:
+  alerting: true
+  archive_time: null
+  archived: false
+  create_time: '2026-07-15T01:12:14.561903Z'
+  enabled: true
+  id: ru_e93c641a-3bb2-405c-b48b-d49bade45242
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_e93c641a-3bb2-405c-b48b-d49bade45242
+  revision_create_time: '2026-07-15T01:12:14.561903Z'
+  revision_id: v_1784077934_561903000
   run_frequency: LIVE
   type: SINGLE_EVENT
 vt_relationships_file_contacts_domain:

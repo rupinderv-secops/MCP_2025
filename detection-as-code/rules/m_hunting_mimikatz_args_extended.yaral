@@ -1,0 +1,44 @@
+rule m_hunting_mimikatz_args_extended {
+  meta:
+    rule_name = "MimiKatz Command Arguments - Extended"
+    description = "Detects command line arguments used by MimiKatz, extended to cover token, lsadump, kerberos and crypto modules."
+    severity = "High"
+    tactic = "TA0006"
+    technique = "T1003"
+    false_positives = "Unlikely to have False Positives. However, activity should be verified as malicious."
+    reference = "https://www.virustotal.com/gui/collection/malware--bf2fc1e5-7850-5ecd-87a7-263e6da5708d"
+
+  events:
+    $e.metadata.event_type = "PROCESS_LAUNCH"
+    (
+      $e.target.process.command_line = /privilege::debug/ and (
+        $e.target.process.command_line = /sekurlsa::/ or
+        $e.target.process.command_line = /token::/ or
+        $e.target.process.command_line = /lsadump::/ or
+        $e.target.process.command_line = /kerberos::/ or
+        $e.target.process.command_line = /crypto::/
+      )
+    ) or
+    $e.target.process.command_line = /sekurlsa::logonpasswords exit/ or
+    ( $e.target.process.command_line = /sekurlsa::pth/ and $e.target.process.command_line = /user:/ ) or
+    $e.target.process.command_line = /sekurlsa::logonpasswords/ or
+    $e.target.process.command_line = /sekurlsa::mindump/
+
+  outcome:
+    $risk_score = 0
+    $event_count = max(1)
+
+    $vendor_name = $e.metadata.vendor_name
+    $product_name = $e.metadata.product_name
+    $result_time = $e.metadata.event_timestamp.seconds
+    $tmp1 = max(
+      if($e.security_result.action != "BLOCK" and $e.security_result.action != "UNKNOWN_ACTION", 2)
+    )
+    $tmp2 = max(
+      if($e.security_result.action = "BLOCK", 1)
+    )
+    $result = arrays.index_to_str(strings.split("attempted,failed,succeeded,succeeded"), $tmp1 + $tmp2)
+
+  condition:
+    $e
+}
