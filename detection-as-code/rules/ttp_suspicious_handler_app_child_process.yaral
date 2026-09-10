@@ -1,0 +1,59 @@
+rule ttp_suspicious_handler_app_child_process {
+    meta:
+      rule_name = "Suspicious Handler Application Child Process"
+      description = "Detects a handler application such as an Office application, PDF reader, or archiver spawning a suspicious child process like a shell or scripting utility. This often indicates the execution of a malicious file delivered via email, web, or removable media."
+      severity = "Low"
+      tactic = "Execution"
+      technique = "T1204.002"
+
+  events:
+    $e.metadata.event_type = "PROCESS_LAUNCH"
+    
+    // Handler applications (Office, PDF readers, Archivers)
+    re.regex($e.principal.process.file.full_path, `\b(winword|excel|powerpnt|mspub|acrord32|acrobat|foxitreader|winrar|7z|winzip)(\.exe)?$`) nocase
+    
+    // Suspicious or unusual child processes
+    re.regex($e.target.process.file.full_path, `\b(powershell|pwsh|wscript|cscript|cmd|regsvr32|rundll32|msiexec|mshta|bash|sh|python|osascript)(\.exe)?$`) nocase
+
+  outcome:
+    // Event Details
+    $principal_process_command_line = $e.principal.process.command_line
+    $principal_process_file_path = $e.principal.process.file.full_path
+    $target_process_command_line = $e.target.process.command_line
+    $target_file_path = $e.target.process.file.full_path
+
+    // Victim Details
+    $victim_uid = $e.principal.asset.asset_id
+    $victim_name = $e.principal.hostname
+    $victim_netid = array($e.principal.ip)
+
+    // Adversary Details
+    $adversary_uid = $e.principal.user.userid
+    $adversary_name = $e.principal.user.user_display_name
+    $adversary_netid = array_distinct(
+    if($e.principal.platform = "WINDOWS",
+      $e.principal.user.windows_sid,  // Value if TRUE
+      $e.principal.user.email_addresses       // Value if FALSE (covers LINUX and MAC in this case)
+      )
+    )
+
+    // Standard Details
+    $vendor_name = array_distinct($e.metadata.vendor_name)
+    $product_name = array_distinct($e.metadata.product_name)
+    $event_count = count_distinct($e.metadata.id)
+    $result_time = $e.metadata.event_timestamp.seconds
+
+    // Result Logic
+    $tmp1 = max(
+      // First, any action is not block or not unknown, return success (2).
+      if($e.security_result.action != "BLOCK" and $e.security_result.action != "UNKNOWN_ACTION", 2)
+    )
+    $tmp2 = max(
+      // If any action is blocked, return failed (1).
+      if($e.security_result.action = "BLOCK", 1)
+    )
+    $result = arrays.index_to_str(strings.split("attempted,failed,succeeded,succeeded"), $tmp1 + $tmp2)
+
+  condition:
+    $e
+}
