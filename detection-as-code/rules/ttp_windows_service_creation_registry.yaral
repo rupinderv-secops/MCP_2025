@@ -1,0 +1,54 @@
+rule ttp_windows_service_creation_registry {
+    meta:
+      rule_name = "Windows Service Creation via Registry"
+      description = "Detects the creation or modification of a Windows service via the Registry, specifically monitoring changes to the ImagePath value within the Services hive. This behavior is commonly used by adversaries to establish persistence."
+      severity = "Low"
+      tactic = "TA0003"
+      technique = "T1543.003"
+
+  events:
+    (
+      $e.metadata.event_type = "REGISTRY_MODIFICATION" or
+      $e.metadata.event_type = "REGISTRY_CREATION"
+    )
+    and
+    re.regex($e.target.registry.registry_key, `\\System\\(CurrentControlSet|ControlSet[0-9]{3})\\Services\\[^\\]+$`) nocase
+    and
+    re.regex($e.target.registry.registry_value_name, `^ImagePath$`) nocase
+
+  outcome:
+    $principal_process_command_line = $e.principal.process.command_line
+    $principal_process_file_path = $e.principal.process.file.full_path
+    $target_registry_key = $e.target.registry.registry_key
+    $target_registry_value_name = $e.target.registry.registry_value_name
+    $target_registry_value_data = $e.target.registry.registry_value_data
+
+    $victim_uid = $e.principal.asset.asset_id
+    $victim_name = $e.principal.hostname
+    $victim_netid = array($e.principal.ip)
+
+    $adversary_uid = $e.principal.user.userid
+    $adversary_name = $e.principal.user.user_display_name
+    $adversary_netid = array_distinct(
+    if($e.principal.platform = "WINDOWS",
+      $e.principal.user.windows_sid,
+      $e.principal.user.email_addresses
+      )
+    )
+
+    $vendor_name = array_distinct($e.metadata.vendor_name)
+    $product_name = array_distinct($e.metadata.product_name)
+    $event_count = count_distinct($e.metadata.id)
+    $result_time = $e.metadata.event_timestamp.seconds
+
+    $tmp1 = max(
+      if($e.security_result.action != "BLOCK" and $e.security_result.action != "UNKNOWN_ACTION", 2)
+    )
+    $tmp2 = max(
+      if($e.security_result.action = "BLOCK", 1)
+    )
+    $result = arrays.index_to_str(strings.split("attempted,failed,succeeded,succeeded"), $tmp1 + $tmp2)
+
+  condition:
+    $e
+}

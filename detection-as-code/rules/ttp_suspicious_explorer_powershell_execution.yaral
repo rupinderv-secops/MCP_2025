@@ -1,0 +1,49 @@
+rule ttp_suspicious_explorer_powershell_execution {
+    meta:
+      rule_name = "Suspicious PowerShell Execution via Explorer Run Dialog"
+      description = "Detects explorer.exe spawning powershell.exe or cmd.exe with hidden execution parameters or download cradles. This behavior is commonly associated with social engineering lures where victims paste malicious commands into the Windows Run dialog."
+      severity = "Low"
+      tactic = "TA0002"
+      technique = "T1059.001"
+
+  events:
+    $e.metadata.event_type = "PROCESS_LAUNCH"
+    re.regex($e.principal.process.file.full_path, `\bexplorer\.exe$`) nocase
+    re.regex($e.target.process.file.full_path, `\b(powershell|cmd|pwsh)\.exe$`) nocase
+    re.regex($e.target.process.command_line, `(-w(indowstyle)?\s+h(idden)?|-ep\s+bypass|-executionpolicy\s+bypass|iex\b|invoke-expression|downloadstring|downloadfile)`) nocase
+
+  outcome:
+    $principal_process_command_line = $e.principal.process.command_line
+    $principal_process_file_path = $e.principal.process.file.full_path
+    $target_process_command_line = $e.target.process.command_line
+    $target_process_file_path = $e.target.process.file.full_path
+
+    $victim_uid = $e.principal.asset.asset_id
+    $victim_name = $e.principal.hostname
+    $victim_netid = array($e.principal.ip)
+
+    $adversary_uid = $e.principal.user.userid
+    $adversary_name = $e.principal.user.user_display_name
+    $adversary_netid = array_distinct(
+    if($e.principal.platform = "WINDOWS",
+      $e.principal.user.windows_sid,
+      $e.principal.user.email_addresses
+      )
+    )
+
+    $vendor_name = array_distinct($e.metadata.vendor_name)
+    $product_name = array_distinct($e.metadata.product_name)
+    $event_count = count_distinct($e.metadata.id)
+    $result_time = $e.metadata.event_timestamp.seconds
+
+    $tmp1 = max(
+      if($e.security_result.action != "BLOCK" and $e.security_result.action != "UNKNOWN_ACTION", 2)
+    )
+    $tmp2 = max(
+      if($e.security_result.action = "BLOCK", 1)
+    )
+    $result = arrays.index_to_str(strings.split("attempted,failed,succeeded,succeeded"), $tmp1 + $tmp2)
+
+  condition:
+    $e
+}

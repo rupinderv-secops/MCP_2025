@@ -1966,6 +1966,18 @@ suspicious_unusual_location_lnk_file:
   revision_id: v_1751512986_296687000
   run_frequency: LIVE
   type: SINGLE_EVENT
+ttp_browser_remote_debugging_credential_access:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-09-10T06:46:47.835103Z'
+  enabled: false
+  id: ru_de322a38-e6f1-4422-83f4-6c9cb35bc4aa
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_de322a38-e6f1-4422-83f4-6c9cb35bc4aa
+  revision_create_time: '2026-09-10T06:46:47.835103Z'
+  revision_id: v_1789022807_835103000
+  run_frequency: LIVE
+  type: SINGLE_EVENT
 ttp_chrome_admin_password_reused:
   alerting: false
   archive_time: null
@@ -1990,6 +2002,18 @@ ttp_kerberos_ticket_manipulation_command:
   revision_id: v_1781671570_966415000
   run_frequency: LIVE
   type: SINGLE_EVENT
+ttp_suspicious_explorer_powershell_execution:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-09-10T07:38:09.344879Z'
+  enabled: false
+  id: ru_d4a6607b-e28b-4aad-89fa-0778ba68c6d9
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_d4a6607b-e28b-4aad-89fa-0778ba68c6d9
+  revision_create_time: '2026-09-10T07:38:09.344879Z'
+  revision_id: v_1789025889_344879000
+  run_frequency: LIVE
+  type: SINGLE_EVENT
 ttp_suspicious_handler_app_child_process:
   alerting: false
   archive_time: null
@@ -2012,6 +2036,18 @@ ttp_suspicious_script_interpreter_with_sleep:
   resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_e93c641a-3bb2-405c-b48b-d49bade45242
   revision_create_time: '2026-07-15T01:12:14.561903Z'
   revision_id: v_1784077934_561903000
+  run_frequency: LIVE
+  type: SINGLE_EVENT
+ttp_windows_service_creation_registry:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-09-10T06:48:14.751199Z'
+  enabled: false
+  id: ru_ebe96fe7-80a2-4060-a32c-303103fd27a1
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_ebe96fe7-80a2-4060-a32c-303103fd27a1
+  revision_create_time: '2026-09-10T06:48:14.751199Z'
+  revision_id: v_1789022894_751199000
   run_frequency: LIVE
   type: SINGLE_EVENT
 vt_relationships_file_contacts_domain:
