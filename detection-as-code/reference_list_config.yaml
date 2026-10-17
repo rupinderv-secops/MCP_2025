@@ -1,0 +1,8 @@
+customer_linux_incident_threat_ips:
+  description: Malicious external IPs associated with the Linux intrusion lifecycle
+    (C2, scanner, RedTail operator, mass deletion).
+  resource_name: projects/secops-env-1/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/referenceLists/customer_linux_incident_threat_ips
+  revision_create_time: '2026-10-16T02:30:34.249695Z'
+  rule_associations_count: null
+  rules: null
+  syntax_type: REFERENCE_LIST_SYNTAX_TYPE_PLAIN_TEXT_STRING

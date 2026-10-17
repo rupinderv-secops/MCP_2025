@@ -1,0 +1,33 @@
+rule linux_ssh_brute_force_success_handoff {
+  meta:
+    rule_name = "Linux SSH Brute Force Followed by Root Login"
+    description = "Detects multiple failed SSH authentication attempts on root followed by a successful login within a 15-minute window, indicative of scan-and-handoff operations."
+    severity = "High"
+    tactic = "Credential Access, Initial Access"
+    technique = "T1110.001, T1078.003"
+
+  events:
+    $fail.metadata.event_type = "USER_LOGIN"
+    $fail.security_result.action = "BLOCK"
+    $fail.target.user.userid = "root"
+    $fail.principal.hostname = $victim_host
+
+    $success.metadata.event_type = "USER_LOGIN"
+    $success.security_result.action = "ALLOW"
+    $success.target.user.userid = "root"
+    $success.principal.hostname = $victim_host
+
+    $fail.metadata.event_timestamp.seconds <= $success.metadata.event_timestamp.seconds
+
+  match:
+    $victim_host over 15m
+
+  outcome:
+    $failed_login_count = count($fail.metadata.id)
+    $failed_source_ips = array_distinct($fail.principal.ip)
+    $success_source_ip = array_distinct($success.principal.ip)
+    $victim_hostname = array_distinct($fail.principal.hostname)
+
+  condition:
+    #fail >= 3 and $success
+}

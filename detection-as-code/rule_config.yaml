@@ -1126,6 +1126,90 @@ ip_target_prevalence:
   revision_id: v_1751426572_622831000
   run_frequency: LIVE
   type: MULTI_EVENT
+linux_cron_file_overwrite_from_tmp:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-10-16T01:49:25.415183Z'
+  enabled: false
+  id: ru_4d32dff9-2787-4e03-aabd-83f783b78c54
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_4d32dff9-2787-4e03-aabd-83f783b78c54
+  revision_create_time: '2026-10-16T01:49:25.415183Z'
+  revision_id: v_1792115365_415183000
+  run_frequency: LIVE
+  type: SINGLE_EVENT
+linux_execution_from_dev_shm:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-10-16T01:49:26.646255Z'
+  enabled: false
+  id: ru_81f93b0b-2aea-4995-8a0b-fe956d8140a2
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_81f93b0b-2aea-4995-8a0b-fe956d8140a2
+  revision_create_time: '2026-10-16T01:49:26.646255Z'
+  revision_id: v_1792115366_646255000
+  run_frequency: LIVE
+  type: SINGLE_EVENT
+linux_execution_hidden_binary:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-10-16T02:28:09.481679Z'
+  enabled: false
+  id: ru_a35296da-7a6a-4f93-b30a-be4d2b3443fe
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_a35296da-7a6a-4f93-b30a-be4d2b3443fe
+  revision_create_time: '2026-10-16T02:28:09.481679Z'
+  revision_id: v_1792117689_481679000
+  run_frequency: LIVE
+  type: SINGLE_EVENT
+linux_interactive_mass_file_deletion:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-10-16T02:28:08.174191Z'
+  enabled: false
+  id: ru_02f473c4-dace-4e58-b0d8-41eb90fa7165
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_02f473c4-dace-4e58-b0d8-41eb90fa7165
+  revision_create_time: '2026-10-16T02:28:08.174191Z'
+  revision_id: v_1792117688_174191000
+  run_frequency: LIVE
+  type: SINGLE_EVENT
+linux_ssh_brute_force_and_accepted_root_login:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-10-16T03:16:58.222767Z'
+  enabled: false
+  id: ru_b8b2f678-e3ff-447d-b3c8-c926475d5ea5
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_b8b2f678-e3ff-447d-b3c8-c926475d5ea5
+  revision_create_time: '2026-10-16T03:16:58.222767Z'
+  revision_id: v_1792120618_222767000
+  run_frequency: LIVE_CUSTOMIZABLE
+  type: MULTI_EVENT
+linux_ssh_brute_force_success_handoff:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-10-16T02:28:06.934111Z'
+  enabled: false
+  id: ru_dbbd6544-be64-4097-adcf-81ded846aa45
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_dbbd6544-be64-4097-adcf-81ded846aa45
+  revision_create_time: '2026-10-16T02:28:06.934111Z'
+  revision_id: v_1792117686_934111000
+  run_frequency: LIVE_CUSTOMIZABLE
+  type: MULTI_EVENT
+linux_suspicious_systemd_service_creation:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-10-16T01:49:27.785135Z'
+  enabled: false
+  id: ru_50c5ccb7-b9ab-4cba-8815-f30be226bddc
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_50c5ccb7-b9ab-4cba-8815-f30be226bddc
+  revision_create_time: '2026-10-16T01:49:27.785135Z'
+  revision_id: v_1792115367_785135000
+  run_frequency: LIVE
+  type: SINGLE_EVENT
 logins_from_terminated_employees:
   alerting: false
   archive_time: null

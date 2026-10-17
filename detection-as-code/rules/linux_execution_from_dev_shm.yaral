@@ -1,0 +1,22 @@
+rule linux_execution_from_dev_shm {
+  meta:
+    rule_name = "Linux Script Execution from Shared Memory"
+    description = "Detects command shells or interpreters executing scripts located in /dev/shm, commonly used to evade disk-based detection."
+    severity = "High"
+    tactic = "Defense Evasion"
+    technique = "T1059.004"
+
+  events:
+    $e.metadata.event_type = "PROCESS_LAUNCH"
+    re.regex($e.target.process.file.full_path, `^/(bin/)?(sh|bash|dash|zsh|python|perl)$`) nocase
+    re.regex($e.target.process.command_line, `/dev/shm/.*\.sh`) nocase
+
+  outcome:
+    $principal_process_command_line = $e.principal.process.command_line
+    $target_process_command_line = $e.target.process.command_line
+    $victim_hostname = $e.principal.hostname
+    $user = $e.principal.user.userid
+
+  condition:
+    $e
+}

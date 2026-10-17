@@ -1,0 +1,23 @@
+rule linux_interactive_mass_file_deletion {
+  meta:
+    rule_name = "Linux Recursive Mass File Deletion in System Directories"
+    description = "Detects recursive forced deletion (rm -rf) targeting critical root or system directories (/var/log, /etc, /root, /home), indicative of anti-forensics or system destruction."
+    severity = "Critical"
+    tactic = "Impact, Defense Evasion"
+    technique = "T1485, T1070"
+
+  events:
+    $e.metadata.event_type = "PROCESS_LAUNCH"
+    (re.regex($e.target.process.file.full_path, `/(bin/)?rm$`) nocase or re.regex($e.target.process.command_line, `\brm\s+`) nocase)
+    re.regex($e.target.process.command_line, `\s+-(r|rf|fr|f)\b`) nocase
+    re.regex($e.target.process.command_line, `(/etc|/var/log|/root|/home|/usr|/boot)`) nocase
+
+  outcome:
+    $target_process_command_line = $e.target.process.command_line
+    $principal_process_command_line = $e.principal.process.command_line
+    $victim_hostname = $e.principal.hostname
+    $user = $e.principal.user.userid
+
+  condition:
+    $e
+}

@@ -1,0 +1,24 @@
+rule linux_execution_hidden_binary {
+  meta:
+    rule_name = "Linux Binary Execution from Hidden Directory or Dotfile"
+    description = "Detects execution of binaries or processes located in hidden directories or hidden dot-files (e.g. /etc/.*), characteristic of cryptominers and rootkits."
+    severity = "High"
+    tactic = "Defense Evasion, Execution"
+    technique = "T1564.001, T1059.004"
+
+  events:
+    $e.metadata.event_type = "PROCESS_LAUNCH"
+    (re.regex($e.target.process.file.full_path, `/(etc|tmp|var|dev|usr)/(\.[^/]+|.*/\.[^/]+)`) nocase or
+     re.regex($e.target.process.command_line, `/(etc|tmp|var|dev|usr)/(\.[^/\s]+)`) nocase or
+     re.regex($e.target.process.command_line, `(xmrig|stratum\+tcp|pool\.)`) nocase)
+
+  outcome:
+    $target_process_command_line = $e.target.process.command_line
+    $target_process_file_path = $e.target.process.file.full_path
+    $principal_process_command_line = $e.principal.process.command_line
+    $victim_hostname = $e.principal.hostname
+    $user = $e.principal.user.userid
+
+  condition:
+    $e
+}

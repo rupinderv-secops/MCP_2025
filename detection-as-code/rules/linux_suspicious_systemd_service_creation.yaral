@@ -1,0 +1,21 @@
+rule linux_suspicious_systemd_service_creation {
+  meta:
+    rule_name = "Suspicious Linux Systemd Service File Creation"
+    description = "Detects creation of systemd unit files in /etc/systemd/system/ associated with persistence mechanisms."
+    severity = "Medium"
+    tactic = "Persistence"
+    technique = "T1543.002"
+
+  events:
+    $e.metadata.event_type = "FILE_CREATION"
+    re.regex($e.target.file.full_path, `/etc/systemd/system/.*\.service$`) nocase
+    re.regex($e.target.file.full_path, `watcher-netai\.service`) nocase
+
+  outcome:
+    $target_file_path = $e.target.file.full_path
+    $victim_hostname = $e.principal.hostname
+    $user = $e.principal.user.userid
+
+  condition:
+    $e
+}

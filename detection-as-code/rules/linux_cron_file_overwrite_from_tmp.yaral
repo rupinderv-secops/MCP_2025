@@ -1,0 +1,22 @@
+rule linux_cron_file_overwrite_from_tmp {
+  meta:
+    rule_name = "Linux Cron File Overwritten from Temporary Directory"
+    description = "Detects modification or replacement of Linux cron configurations using files sourced from /tmp or /var/tmp."
+    severity = "High"
+    tactic = "Persistence"
+    technique = "T1053.003"
+
+  events:
+    $e.metadata.event_type = "PROCESS_LAUNCH"
+    re.regex($e.target.process.command_line, `(cp|mv|cat|install)\s+.*(/tmp/|/var/tmp/).*(/etc/cron|/var/spool/cron)`) nocase
+
+  outcome:
+    $principal_process_command_line = $e.principal.process.command_line
+    $target_process_command_line = $e.target.process.command_line
+    $victim_hostname = $e.principal.hostname
+    $victim_ip = array($e.principal.ip)
+    $user = $e.principal.user.userid
+
+  condition:
+    $e
+}
