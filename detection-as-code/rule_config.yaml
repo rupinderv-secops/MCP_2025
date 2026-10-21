@@ -2134,6 +2134,18 @@ ttp_windows_service_creation_registry:
   revision_id: v_1789022894_751199000
   run_frequency: LIVE
   type: SINGLE_EVENT
+unapproved_domain_or_subdomain_alert:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-10-20T02:39:33.979599Z'
+  enabled: false
+  id: ru_c35ce6ca-7b73-4b5c-b896-3459ba16953f
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_c35ce6ca-7b73-4b5c-b896-3459ba16953f
+  revision_create_time: '2026-10-20T02:39:33.979599Z'
+  revision_id: v_1792463973_979599000
+  run_frequency: LIVE
+  type: SINGLE_EVENT
 vt_relationships_file_contacts_domain:
   alerting: true
   archive_time: null

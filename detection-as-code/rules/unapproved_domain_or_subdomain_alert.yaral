@@ -1,0 +1,31 @@
+rule unapproved_domain_or_subdomain_alert {
+  meta:
+    author = "rupinderv@google.com"
+    description = "Alerts on any DNS query for a domain or subdomain not present in approved_domains or approved_domains_subdomains data tables"
+    severity = "Medium"
+    priority = "Medium"
+
+  events:
+    $e.metadata.event_type = "NETWORK_DNS"
+    $e.network.dns.questions.name != ""
+    $e.network.dns.questions.name = $full_domain
+    re.capture($e.network.dns.questions.name, `^(.*)\.[^.]+\.[^.]+$`) = $subdomain
+    re.capture($e.network.dns.questions.name, `([^.]+\.[^.]+)$`) = $root_domain
+
+    not $full_domain in %approved_domains.domain
+    not $full_domain in %approved_domains_subdomains.domain
+    not $subdomain in %approved_domains_subdomains.subdomain
+
+  match:
+    $full_domain, $subdomain, $root_domain over 1h
+
+  outcome:
+    $risk_score = 65
+    $principal_ips = array_distinct($e.principal.ip)
+    $principal_hostnames = array_distinct($e.principal.hostname)
+    $dns_answers = array_distinct($e.network.dns.answers.data)
+    $event_count = count_distinct($e.metadata.id)
+
+  condition:
+    $e
+}
