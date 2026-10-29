@@ -1,0 +1,51 @@
+rule ttp_suspicious_process_http_c2 {
+    meta:
+      rule_name = "Suspicious Process HTTP C2 Communication"
+      description = "Detects unexpected HTTP or HTTPS network connections originating from suspicious processes such as PowerShell or rundll32, potentially indicating web-based Command and Control or dead drop resolver activity."
+      severity = "Low"
+      tactic = "TA0011"
+      technique = "T1102.001"
+
+  events:
+    $e.metadata.event_type = "NETWORK_HTTP" or $e.metadata.event_type = "NETWORK_CONNECTION"
+    
+    // Standard and alternative web ports
+    $e.target.port = 80 or $e.target.port = 443 or $e.target.port = 8080 or $e.target.port = 8443
+    
+    // Suspicious processes commonly abused for C2 or infostealer payload staging
+    re.regex($e.principal.process.file.full_path, `(^|\\|/)(powershell|pwsh|rundll32|mshta|wscript|cscript)(\.exe)?$`) nocase
+
+  outcome:
+    // Event Details
+    $principal_process_command_line = $e.principal.process.command_line
+    $principal_process_file_path = $e.principal.process.file.full_path
+    $target_file_path = $e.target.file.full_path
+
+    // Victim Details
+    $victim_name = $e.principal.hostname
+    $victim_netid = array_distinct($e.principal.ip)
+
+    // Adversary Details
+    $adversary_uid = $e.principal.user.userid
+    $adversary_name = $e.principal.user.user_display_name
+
+    // Standard Details
+    $vendor_name = array_distinct($e.metadata.vendor_name)
+    $product_name = array_distinct($e.metadata.product_name)
+    $event_count = count_distinct($e.metadata.id)
+    $result_time = $e.metadata.event_timestamp.seconds
+
+    // Result Logic
+    $tmp1 = max(
+      // First, any action is not block or not unknown, return success (2).
+      if(any $e.security_result.action != "BLOCK" and any $e.security_result.action != "UNKNOWN_ACTION", 2)
+    )
+    $tmp2 = max(
+      // If any action is blocked, return failed (1).
+      if(any $e.security_result.action = "BLOCK", 1)
+    )
+    $result = arrays.index_to_str(strings.split("attempted,failed,succeeded,succeeded"), $tmp1 + $tmp2)
+
+  condition:
+    $e
+}

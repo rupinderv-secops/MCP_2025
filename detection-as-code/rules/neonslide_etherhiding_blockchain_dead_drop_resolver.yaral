@@ -1,0 +1,45 @@
+rule neonslide_etherhiding_blockchain_dead_drop_resolver {
+  meta:
+    author = "Google SecOps Detection Engineering"
+    description = "Detects NEONSLIDE / EtherHiding (GLOBAL.26.006) dead drop resolver activity where script interpreters or non-browser processes query Web3/blockchain smart contract RPC endpoints (e.g., BSCScan, Infura, Ankr, Polygon RPC, eth_call) to retrieve C2 infrastructure."
+    severity = "High"
+    priority = "High"
+    platform = "WINDOWS"
+    mitre_attack_tactic = "Command and Control"
+    mitre_attack_technique = "T1102.001"
+
+  events:
+    (
+      $e.metadata.event_type = "NETWORK_DNS" or
+      $e.metadata.event_type = "NETWORK_CONNECTION" or
+      $e.metadata.event_type = "NETWORK_HTTP"
+    )
+    (
+      re.regex($e.network.dns.questions.name, `(?i)(api\.bscscan\.com|bsc-dataseed[0-9a-z.-]*\.(binance\.org|defibit\.io|ninicoin\.io)|mainnet\.infura\.io|rpc\.ankr\.com|polygon-rpc\.com|cloudflare-eth\.com)`) or
+      re.regex($e.target.hostname, `(?i)(api\.bscscan\.com|bsc-dataseed[0-9a-z.-]*\.(binance\.org|defibit\.io|ninicoin\.io)|mainnet\.infura\.io|rpc\.ankr\.com|polygon-rpc\.com|cloudflare-eth\.com)`) or
+      re.regex($e.target.url, `(?i)(module=proxy&action=eth_call|api\.bscscan\.com/api|mainnet\.infura\.io/v3/)`) or
+      re.regex($e.principal.process.command_line, `(?i)(eth_call|api\.bscscan\.com|mainnet\.infura\.io|bsc-dataseed)`)
+    )
+    (
+      re.regex($e.principal.process.file.full_path, `(?i)(^|\\|/)(powershell|pwsh|cmd|mshta|wscript|cscript|curl|rundll32|regsvr32)\.exe$`) or
+      re.regex($e.principal.process.file.full_path, `(?i)\\(Users\\[^\\]+\\(Downloads|AppData\\Local\\Temp)|Windows\\Temp)\\[^\\]+\.exe$`)
+    )
+
+    $hostname = $e.principal.hostname
+
+  match:
+    $hostname over 15m
+
+  outcome:
+    $risk_score = max(85)
+    $principal_host = array_distinct($e.principal.hostname)
+    $user_id = array_distinct(if($e.principal.user.userid != "", $e.principal.user.userid, $e.principal.user.windows_sid))
+    $process_path = array_distinct($e.principal.process.file.full_path)
+    $process_cmd = array_distinct($e.principal.process.command_line)
+    $queried_dns = array_distinct($e.network.dns.questions.name)
+    $target_host = array_distinct($e.target.hostname)
+    $target_url = array_distinct($e.target.url)
+
+  condition:
+    $e
+}

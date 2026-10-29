@@ -1354,6 +1354,30 @@ mitre_attack_T1570_suspicious_command_psexec:
   revision_id: v_1751426602_567055000
   run_frequency: LIVE
   type: SINGLE_EVENT
+neonslide_clickfix_explorer_execution_cradle:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-10-28T06:12:01.093183Z'
+  enabled: false
+  id: ru_7d6582ce-0a9a-45db-aa3d-8c3cea18233a
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_7d6582ce-0a9a-45db-aa3d-8c3cea18233a
+  revision_create_time: '2026-10-28T06:12:01.093183Z'
+  revision_id: v_1793167921_093183000
+  run_frequency: LIVE
+  type: SINGLE_EVENT
+neonslide_etherhiding_blockchain_dead_drop_resolver:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-10-28T06:12:06.549775Z'
+  enabled: false
+  id: ru_32be38c3-1fd2-43a2-baad-c5c77939bc07
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_32be38c3-1fd2-43a2-baad-c5c77939bc07
+  revision_create_time: '2026-10-28T06:12:06.549775Z'
+  revision_id: v_1793167926_549775000
+  run_frequency: LIVE
+  type: SINGLE_EVENT
 network_connection_first_seen_in_past_day:
   alerting: false
   archive_time: null
@@ -2108,6 +2132,18 @@ ttp_suspicious_handler_app_child_process:
   resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_9e5ecbc7-52cc-4856-bc2a-040e781ed20a
   revision_create_time: '2026-09-09T08:49:57.238271Z'
   revision_id: v_1788943797_238271000
+  run_frequency: LIVE
+  type: SINGLE_EVENT
+ttp_suspicious_process_http_c2:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-10-28T06:12:04.000159Z'
+  enabled: false
+  id: ru_f006c8fb-ed32-4faa-af25-a93818715e8e
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_f006c8fb-ed32-4faa-af25-a93818715e8e
+  revision_create_time: '2026-10-28T06:12:04.000159Z'
+  revision_id: v_1793167924_000159000
   run_frequency: LIVE
   type: SINGLE_EVENT
 ttp_suspicious_script_interpreter_with_sleep:

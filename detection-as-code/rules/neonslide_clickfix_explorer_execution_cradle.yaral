@@ -1,0 +1,39 @@
+rule neonslide_clickfix_explorer_execution_cradle {
+  meta:
+    author = "Google SecOps Detection Engineering"
+    description = "Detects ClickFix social engineering execution cradles (GLOBAL.26.006 / NEONSLIDE) where explorer.exe spawns PowerShell, CMD, or MSHTA with hidden execution or download cradle arguments across EDR schemas (including CS_EDR parent_process.file.names and SID-only user contexts)."
+    severity = "High"
+    priority = "High"
+    platform = "WINDOWS"
+    mitre_attack_tactic = "Execution"
+    mitre_attack_technique = "T1059.001, T1204.002"
+
+  events:
+    $e.metadata.event_type = "PROCESS_LAUNCH"
+    (
+      re.regex($e.principal.process.file.full_path, `(?i)(^|\\|/)explorer\.exe$`) or
+      re.regex($e.src.process.file.full_path, `(?i)(^|\\|/)explorer\.exe$`) or
+      re.regex($e.target.process.parent_process.file.full_path, `(?i)(^|\\|/)explorer\.exe$`) or
+      any $e.target.process.parent_process.file.names = "explorer.exe" nocase
+    )
+    (
+      re.regex($e.target.process.file.full_path, `(?i)(^|\\|/)(powershell|pwsh|cmd|mshta|curl)\.exe$`) or
+      any $e.target.process.file.names = /(?i)^(powershell|pwsh|cmd|mshta|curl)\.exe$/
+    )
+    re.regex($e.target.process.command_line, `(?i)(-w(indowstyle)?\s+h(idden)?|-ep\s+bypass|-executionpolicy\s+bypass|iex\b|invoke-expression|invoke-webrequest|invoke-restmethod|\birm\b|\biwr\b|downloadstring|downloadfile|frombase64string|-enc(odedcommand)?\s+[a-z0-9+/=]{16,}|mshta(\.exe)?\s+https?://|curl(\.exe)?\s+.*https?://)`)
+
+    $hostname = $e.principal.hostname
+
+  match:
+    $hostname over 5m
+
+  outcome:
+    $risk_score = max(85)
+    $principal_host = array_distinct($e.principal.hostname)
+    $user_id = array_distinct(if($e.principal.user.userid != "", $e.principal.user.userid, $e.principal.user.windows_sid))
+    $executed_command = array_distinct($e.target.process.command_line)
+    $target_process_path = array_distinct($e.target.process.file.full_path)
+
+  condition:
+    $e
+}
