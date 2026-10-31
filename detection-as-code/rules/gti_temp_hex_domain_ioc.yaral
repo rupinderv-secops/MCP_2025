@@ -1,0 +1,38 @@
+rule gti_temp_hex_domain_ioc {
+  meta:
+    author = "Google SecOps Detection Engineering Agent"
+    description = "Detects DNS queries to domains attributed to the TEMP.HEX threat actor in Google Threat Intelligence (GCTI) or Entity Graph IOC feeds."
+    severity = "HIGH"
+    priority = "HIGH"
+    mitre_attack_tactic = "Reconnaissance, Command and Control"
+    mitre_attack_technique = "T1596, T1071.001"
+    threat_actor = "TEMP.HEX"
+
+  events:
+    $e.metadata.event_type = "NETWORK_DNS"
+    $e.network.dns.questions.name != ""
+    $domain = $e.network.dns.questions.name
+
+    $ioc.graph.metadata.entity_type = "DOMAIN_NAME"
+    $ioc.graph.entity.hostname = $domain
+    (
+      re.regex($ioc.graph.metadata.threat.threat_name, `(?i)TEMP\.HEX`) or
+      re.regex($ioc.graph.metadata.threat.associations.name, `(?i)TEMP\.HEX`) or
+      re.regex($ioc.graph.metadata.threat.summary, `(?i)TEMP\.HEX`)
+    )
+
+  match:
+    $domain over 5m
+
+  outcome:
+    $risk_score = max(85)
+    $event_count = count_distinct($e.metadata.id)
+    $principal_hosts = array_distinct($e.principal.hostname)
+    $principal_ips = array_distinct($e.principal.ip)
+    $threat_names = array_distinct($ioc.graph.metadata.threat.threat_name)
+    $associated_actors = array_distinct($ioc.graph.metadata.threat.associations.name)
+    $ioc_sources = array_distinct($ioc.graph.metadata.product_name)
+
+  condition:
+    $e and $ioc
+}

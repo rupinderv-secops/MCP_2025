@@ -1,0 +1,51 @@
+rule symantec_edlp_large_file_upload_external {
+  meta:
+    author = "Google SecOps Detection Engineering"
+    description = "Detects high-volume large file exfiltration or upload to external destinations via Symantec EDLP / DLP (>100 connections with >5MB file size or outbound network transfer)."
+    severity = "High"
+    priority = "High"
+    category = "Exfiltration"
+    mitre_attack_tactic = "TA0010"
+    mitre_attack_technique = "T1048.003, T1567"
+    version = "1.0.0"
+
+  events:
+    // 1. Symantec Endpoint DLP / DLP telemetry
+    (
+      $e.metadata.log_type = "SYMANTEC_DLP" or
+      $e.metadata.product_name = /Symantec.*DLP|EDLP/nocase or
+      ($e.metadata.vendor_name = /Symantec/nocase and $e.metadata.product_name = /DLP|EDLP/nocase)
+    )
+
+    // 2. Exclude internal RFC 1918, loopback, and link-local destinations
+    $e.target.ip != ""
+    not net.ip_in_range_cidr($e.target.ip, "10.0.0.0/8")
+    not net.ip_in_range_cidr($e.target.ip, "172.16.0.0/12")
+    not net.ip_in_range_cidr($e.target.ip, "192.168.0.0/16")
+    not net.ip_in_range_cidr($e.target.ip, "127.0.0.0/8")
+    not net.ip_in_range_cidr($e.target.ip, "169.254.0.0/16")
+
+    // 3. File size or outbound transfer bytes > 5 MB (5,242,880 bytes)
+    (
+      $e.target.file.size > 5242880 or
+      $e.network.sent_bytes > 5242880
+    )
+
+    // 4. Match variable binding
+    $e.principal.hostname = $hostname
+
+  match:
+    $hostname over 1h
+
+  outcome:
+    $connection_count = count($e.metadata.id)
+    $total_bytes_sent = sum($e.network.sent_bytes)
+    $max_file_size = max($e.target.file.size)
+    $target_ips = array_distinct($e.target.ip)
+    $target_hostnames = array_distinct($e.target.hostname)
+    $principal_users = array_distinct($e.principal.user.userid)
+    $file_names = array_distinct($e.target.file.names)
+
+  condition:
+    #e > 100
+}

@@ -994,6 +994,30 @@ gti_targeted_industry_with_dt_join:
   revision_id: v_1763446931_900031000
   run_frequency: LIVE
   type: MULTI_EVENT
+gti_temp_hex_domain_ioc:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-10-30T08:39:50.113695Z'
+  enabled: false
+  id: ru_8c080eea-5f71-43d1-9917-5071af47b462
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_8c080eea-5f71-43d1-9917-5071af47b462
+  revision_create_time: '2026-10-30T08:39:50.113695Z'
+  revision_id: v_1793349590_113695000
+  run_frequency: LIVE_CUSTOMIZABLE
+  type: MULTI_EVENT
+gti_temp_hex_file_hash_ioc:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-10-30T08:39:50.437311Z'
+  enabled: false
+  id: ru_14f95068-a93e-4f6f-9e50-67e5de2d4042
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_14f95068-a93e-4f6f-9e50-67e5de2d4042
+  revision_create_time: '2026-10-30T08:39:50.437311Z'
+  revision_id: v_1793349590_437311000
+  run_frequency: LIVE_CUSTOMIZABLE
+  type: MULTI_EVENT
 hash_prevalence:
   alerting: false
   archive_time: null
@@ -2074,6 +2098,18 @@ suspicious_unusual_location_lnk_file:
   revision_id: v_1751512986_296687000
   run_frequency: LIVE
   type: SINGLE_EVENT
+symantec_edlp_large_file_upload_external:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-10-30T08:37:47.084559Z'
+  enabled: false
+  id: ru_4528b68c-3c15-4695-94a4-90aad456f668
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_4528b68c-3c15-4695-94a4-90aad456f668
+  revision_create_time: '2026-10-30T08:37:47.084559Z'
+  revision_id: v_1793349467_084559000
+  run_frequency: HOURLY_CUSTOMIZABLE
+  type: MULTI_EVENT
 ttp_browser_remote_debugging_credential_access:
   alerting: false
   archive_time: null
@@ -2158,6 +2194,18 @@ ttp_suspicious_script_interpreter_with_sleep:
   revision_id: v_1784077934_561903000
   run_frequency: LIVE
   type: SINGLE_EVENT
+ttp_web_protocol_c2_via_scripting_tools:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-10-30T07:26:32.515263Z'
+  enabled: false
+  id: ru_a2a38c72-3def-4caf-b931-5a1a91c4eee8
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_a2a38c72-3def-4caf-b931-5a1a91c4eee8
+  revision_create_time: '2026-10-30T07:26:32.515263Z'
+  revision_id: v_1793345192_515263000
+  run_frequency: LIVE
+  type: SINGLE_EVENT
 ttp_windows_service_creation_registry:
   alerting: false
   archive_time: null
@@ -2180,6 +2228,18 @@ unapproved_domain_or_subdomain_alert:
   resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_c35ce6ca-7b73-4b5c-b896-3459ba16953f
   revision_create_time: '2026-10-20T02:39:33.979599Z'
   revision_id: v_1792463973_979599000
+  run_frequency: LIVE
+  type: SINGLE_EVENT
+vt_api_temp_hex_recon_ioc_hunting:
+  alerting: false
+  archive_time: null
+  archived: false
+  create_time: '2026-10-30T08:39:50.897247Z'
+  enabled: false
+  id: ru_66fb3f26-e7b3-437b-9cec-9d4798554719
+  resource_name: projects/504549436370/locations/us/instances/87f73b6a-35b3-463e-b1f5-eb96a69d2bf6/rules/ru_66fb3f26-e7b3-437b-9cec-9d4798554719
+  revision_create_time: '2026-10-30T08:39:50.897247Z'
+  revision_id: v_1793349590_897247000
   run_frequency: LIVE
   type: SINGLE_EVENT
 vt_relationships_file_contacts_domain:

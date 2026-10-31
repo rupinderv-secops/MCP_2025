@@ -1,0 +1,37 @@
+rule vt_api_temp_hex_recon_ioc_hunting {
+  meta:
+    author = "Google SecOps Detection Engineering Agent"
+    description = "Detects threat intelligence collection or reconnaissance queries searching for TEMP.HEX indicators via the VirusTotal API from endpoint scripting or command-line tools (TDO t01)."
+    severity = "MEDIUM"
+    priority = "MEDIUM"
+    mitre_attack_tactic = "Reconnaissance"
+    mitre_attack_technique = "T1596"
+    threat_actor = "TEMP.HEX"
+
+  events:
+    (
+      $e.metadata.event_type = "NETWORK_HTTP" or
+      $e.metadata.event_type = "NETWORK_CONNECTION" or
+      $e.metadata.event_type = "PROCESS_LAUNCH" or
+      $e.metadata.event_type = "STATUS_UNCATEGORIZED"
+    )
+    $e.principal.hostname != ""
+    $hostname = $e.principal.hostname
+    (
+      re.regex($e.target.url, `(?i)virustotal\.com/api/v3/search.*query=temp\.hex`) or
+      re.regex($e.target.process.command_line, `(?i)virustotal\.com/api/v3/search.*query=temp\.hex`)
+    )
+
+  match:
+    $hostname over 15m
+
+  outcome:
+    $risk_score = max(65)
+    $event_count = count_distinct($e.metadata.id)
+    $command_lines = array_distinct($e.target.process.command_line)
+    $urls = array_distinct($e.target.url)
+    $users = array_distinct($e.principal.user.userid)
+
+  condition:
+    $e
+}

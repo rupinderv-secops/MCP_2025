@@ -1,0 +1,41 @@
+rule gti_temp_hex_file_hash_ioc {
+  meta:
+    author = "Google SecOps Detection Engineering Agent"
+    description = "Detects process launches or file creations matching SHA256 file hashes attributed to the TEMP.HEX threat actor in Google Threat Intelligence (GCTI), Entity Graph IOC feeds, or the GTI Data Table."
+    severity = "HIGH"
+    priority = "HIGH"
+    mitre_attack_tactic = "Execution, Defense Evasion"
+    mitre_attack_technique = "T1204.002"
+    threat_actor = "TEMP.HEX"
+
+  events:
+    (
+      $e.metadata.event_type = "PROCESS_LAUNCH" or
+      $e.metadata.event_type = "FILE_CREATION"
+    )
+    $e.target.process.file.sha256 != ""
+    $sha256 = $e.target.process.file.sha256
+
+    $ioc.graph.metadata.entity_type = "FILE"
+    $ioc.graph.entity.file.sha256 = $sha256
+    (
+      re.regex($ioc.graph.metadata.threat.threat_name, `(?i)TEMP\.HEX`) or
+      re.regex($ioc.graph.metadata.threat.associations.name, `(?i)TEMP\.HEX`) or
+      re.regex($ioc.graph.metadata.threat.summary, `(?i)TEMP\.HEX`)
+    )
+
+  match:
+    $sha256 over 5m
+
+  outcome:
+    $risk_score = max(90)
+    $event_count = count_distinct($e.metadata.id)
+    $principal_hosts = array_distinct($e.principal.hostname)
+    $file_paths = array_distinct($e.target.process.file.full_path)
+    $threat_names = array_distinct($ioc.graph.metadata.threat.threat_name)
+    $associated_actors = array_distinct($ioc.graph.metadata.threat.associations.name)
+    $ioc_sources = array_distinct($ioc.graph.metadata.product_name)
+
+  condition:
+    $e and $ioc
+}
